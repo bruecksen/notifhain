@@ -8,6 +8,9 @@ class CompletedManager(models.Manager):
     def uncompleted(self, **kwargs):
         return self.filter(completed=False)
 
+    def new(self, **kwargs):
+        return self.filter(completed=None)
+
 
 class Program(models.Model):
     name = models.CharField(max_length=200)

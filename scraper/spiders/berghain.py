@@ -71,7 +71,7 @@ class BerghainEventDetailSpider(scrapy.Spider):
     }
 
     def start_requests(self):
-        for event in DancefloorEvent.objects.uncompleted():
+        for event in DancefloorEvent.objects.new():
             logger.info(event.url)
             yield scrapy.Request(event.url, meta={"event": event}, callback=self.parse)
 
