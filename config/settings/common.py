@@ -86,8 +86,8 @@ EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND', default='django.core.mail.backends.s
 DEFAULT_FROM_EMAIL = env('DJANGO_DEFAULT_FROM_EMAIL', default='django@localhost')
 EMAIL_PORT = env.int('DJANGO_EMAIL_PORT', default=25)
 EMAIL_HOST = env('DJANGO_EMAIL_HOST', default='localhost')
-EMAIL_HOST_USER = env('DJANGO_EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = env('DJANGO_EMAIL_HOST_PASSWORD')
+EMAIL_HOST_USER = env('DJANGO_EMAIL_HOST_USER', default='')
+EMAIL_HOST_PASSWORD = env('DJANGO_EMAIL_HOST_PASSWORD', default='')
 
 # MANAGER CONFIGURATION
 # ------------------------------------------------------------------------------

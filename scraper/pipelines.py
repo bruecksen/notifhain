@@ -7,7 +7,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth import get_user_model
 
-from notifhain.event.models import Room, Slot, Artist
+from notifhain.event.models import Room, Slot, Artist, DancefloorEvent
 
 logger = logging.getLogger('scrapy')
 
@@ -115,8 +115,6 @@ class EventDetailsPipeline(DjangoPipeline):
         if not event.completed and datetime.datetime.now().date() > event.event_date:
             event.completed = True
         event.save()
-        if event.completed and not event.notification_send:
-            self.send_notification(event)
 
         return event_details_item
 
@@ -134,16 +132,19 @@ class EventDetailsPipeline(DjangoPipeline):
             item_model.artists.add(artist)
         return slot_item
 
-    def send_notification(self, event):
-        logger.info("send_timetable_email")
-        msg_plain = render_to_string('event-timetable-online.html', {'event': event})
-        send_emails_to = get_user_model().objects.all().values_list('email', flat=True)
-        send_mail(
-            'Timetable online: %s' % event.name,
-            msg_plain,
-            settings.DEFAULT_FROM_EMAIL,
-            send_emails_to,
-            fail_silently=False,
-        )
-        event.notification_send = True
-        event.save()
+    def close_spider(self, spider):
+        today = datetime.date.today()
+        next_monday = today + datetime.timedelta(days=-today.weekday(), weeks=1)
+        for event in DancefloorEvent.objects.completed().filter(notification_send=False, event_details__event_date__lte=next_monday):
+            logger.info("send_timetable_email")
+            msg_plain = render_to_string('event-timetable-online.html', {'event': event})
+            send_emails_to = get_user_model().objects.all().values_list('email', flat=True)
+            send_mail(
+                'Timetable online: %s %s' % (event.name, event.event_date),
+                msg_plain,
+                settings.DEFAULT_FROM_EMAIL,
+                send_emails_to,
+                fail_silently=False,
+            )
+            event.notification_send = True
+            event.save()
