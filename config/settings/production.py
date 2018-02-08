@@ -82,6 +82,3 @@ LOGGING = {
         },
     },
 }
-
-# Custom Admin URL, use {% url 'admin:index' %}
-ADMIN_URL = env('DJANGO_ADMIN_URL')

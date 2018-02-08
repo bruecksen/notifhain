@@ -36,6 +36,7 @@ def pip():
         run("./manage.py collectstatic --noinput --settings=config.settings.production")
     reload_webserver()
 
+
 def deploy():
     with cd(env.path):
         run("git pull %(push_remote)s %(push_branch)s" % env)
