@@ -83,8 +83,6 @@ class BerghainEventDetailSpider(scrapy.Spider):
         event = response.meta["event"]
         item["event"] = event
         timetable_exists = response.css(".running_order_time").extract_first()
-        if datetime.datetime.now().date() > event.event_date:
-            event.mark_as_completed()
         if event.completed is not None and not timetable_exists:
             # if not the first run
             # if timetable still doesn't exist
@@ -124,3 +122,15 @@ class BerghainEventDetailSpider(scrapy.Spider):
                 room_item["slots"].append(slot_item)
             item["rooms"].append(room_item)
         yield item
+
+
+class BerghainEventUpdateSpider(BerghainEventDetailSpider):
+    name = "berghain-event-update"
+
+    def start_requests(self):
+        today = datetime.date.today()
+        next_monday = today + datetime.timedelta(days=-today.weekday(), weeks=1)
+        logger.info("update all till:" + str(next_monday))
+        for event in DancefloorEvent.objects.uncompleted().filter(event_details__event_date__lte=next_monday):
+            logger.info(event.url)
+            yield scrapy.Request(event.url, meta={"event": event}, callback=self.parse)

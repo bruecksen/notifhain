@@ -44,7 +44,8 @@ class DancefloorEvent(models.Model):
         return self.name
 
     class Meta:
-        verbose_name_plural = "Dancefloor Events"
+        verbose_name = "Event"
+        verbose_name_plural = "Events"
         ordering = ["event_date", ]
 
     def mark_as_completed(self):
@@ -70,7 +71,8 @@ class DancefloorEventDetails(models.Model):
         return self.name
 
     class Meta:
-        verbose_name_plural = "Dancefloor Event Details"
+        verbose_name = "Event Detail"
+        verbose_name_plural = "Event Details"
         ordering = ["event_date"]
 
 
