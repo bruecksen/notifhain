@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 
 # Scrapy settings for scraper project
 #

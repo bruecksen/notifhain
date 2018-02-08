@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
 """
 Production Configurations
 
 
 """
-from __future__ import absolute_import, unicode_literals
+import raven
 
 from .common import *  # noqa
 
