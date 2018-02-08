@@ -11,11 +11,13 @@
 
 import os
 import django
-
 import environ
-ROOT_DIR = environ.Path(__file__) - 3  # (notifhain/config/settings/common.py - 3 = notifhain/)
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.development")
+env = environ.Env()
+ROOT_DIR = environ.Path(__file__) - 3  # (notifhain/config/settings/common.py - 3 = notifhain/)
+env.read_env(ROOT_DIR('.env'))
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", env("DJANGO_SETTINGS_MODULE", default="config.settings.development"))
 django.setup()
 
 BOT_NAME = 'scraper'
