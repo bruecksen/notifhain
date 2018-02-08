@@ -1,3 +1,6 @@
 # Pro-tip: Try not to put anything here. Avoid dependencies in
 #	production that aren't in development.
 -r base.txt
+
+raven==5.16.0
+gunicorn==19.4.5
