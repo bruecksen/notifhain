@@ -16,6 +16,7 @@ ROOT_DIR = environ.Path(__file__) - 3  # (notifhain/config/settings/common.py - 
 APPS_DIR = ROOT_DIR.path('notifhain')
 
 env = environ.Env()
+env.read_env(ROOT_DIR('.env'))
 
 # APP CONFIGURATION
 # ------------------------------------------------------------------------------
