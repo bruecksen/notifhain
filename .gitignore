@@ -14,3 +14,4 @@ whoosh_index/
 *.sublime-workspace
 !.coveragerc
 !.gitignore
+celerybeat-schedule.db
