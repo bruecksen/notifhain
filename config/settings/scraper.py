@@ -9,20 +9,18 @@
 #     http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #     http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 
-import sys
 import os
 import django
 
+import environ
+ROOT_DIR = environ.Path(__file__) - 3  # (notifhain/config/settings/common.py - 3 = notifhain/)
 
-sys.path.append('/Users/bruecksen/Sites/notifhain/')
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.development")
 django.setup()
 
 BOT_NAME = 'scraper'
 
 SPIDER_MODULES = ['scraper.spiders']
-NEWSPIDER_MODULE = 'scraper.spiders'
-
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'scraper (+http://www.yourdomain.com)'
