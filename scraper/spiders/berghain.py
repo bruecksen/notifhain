@@ -44,7 +44,7 @@ class BerghainEventSpider(scrapy.Spider):
     }
 
     def start_requests(self):
-        program = Program.objects.uncompleted().first()
+        program = Program.objects.uncompleted()
         yield scrapy.Request(program.url, meta={"program": program}, callback=self.parse)
 
     def parse(self, response):
