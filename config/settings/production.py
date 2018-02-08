@@ -31,8 +31,12 @@ RAVEN_MIDDLEWARE = (
 MIDDLEWARE += RAVEN_MIDDLEWARE
 
 # Sentry Configuration
-SENTRY_DSN = env('DJANGO_SENTRY_DSN')
-SENTRY_CLIENT = env('DJANGO_SENTRY_CLIENT', default='raven.contrib.django.raven_compat.DjangoClient')
+RAVEN_CONFIG = {
+    'dsn': env('DJANGO_SENTRY_DSN'),
+    # If you are using git, you can also automatically configure the
+    # release based on the git info.
+    'release': raven.fetch_git_sha(os.path.abspath(os.pardir)),
+}
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,
