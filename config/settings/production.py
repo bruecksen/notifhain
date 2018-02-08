@@ -3,7 +3,6 @@ Production Configurations
 
 
 """
-import os
 import raven
 
 from .common import *  # noqa
@@ -35,7 +34,7 @@ RAVEN_CONFIG = {
     'dsn': env('DJANGO_SENTRY_DSN'),
     # If you are using git, you can also automatically configure the
     # release based on the git info.
-    'release': raven.fetch_git_sha(os.path.abspath(os.pardir)),
+    'release': raven.fetch_git_sha(ROOT_DIR),
 }
 LOGGING = {
     'version': 1,
