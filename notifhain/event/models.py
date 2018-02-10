@@ -37,6 +37,7 @@ class DancefloorEvent(models.Model):
     last_updated = models.DateTimeField(auto_now=True)
     completed = models.NullBooleanField(default=None, null=True, blank=True)
     notification_send = models.BooleanField(default=False)
+    timetable_updated = models.DateTimeField(blank=True, null=True)
 
     objects = CompletedManager()
 

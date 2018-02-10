@@ -12,6 +12,7 @@ class ProgramItem(DjangoItem):
 class DancefloorEventItem(DjangoItem):
     django_model = DancefloorEvent
     date_string = scrapy.Field()
+    timetable_updated = scrapy.Field()
 
 
 class DancefloorEventDetailsItem(DjangoItem):

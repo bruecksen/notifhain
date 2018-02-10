@@ -112,6 +112,8 @@ class EventDetailsPipeline(DjangoPipeline):
                 self.process_slot(slot_item, room, event_details, spider)
         event = event_details.event
         event.completed = event_details_item["completed"]
+        if event.completed and not event.timetable_updated:
+            event.timetable_updated = datetime.datetime.now()
         if not event.completed and datetime.datetime.now().date() > event.event_date:
             event.completed = True
         event.save()
