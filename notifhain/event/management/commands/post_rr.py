@@ -1,4 +1,4 @@
-import time
+from time import sleep
 from django.core.management.base import BaseCommand
 from django.template.defaultfilters import capfirst
 from django.template.loader import render_to_string
@@ -15,6 +15,32 @@ def berghainify(name):
 
 
 class Command(BaseCommand):
+
+    display = None
+    driver = None
+
+    # Open headless chromedriver
+    def start_driver(self):
+        print('starting driver...')
+        if not settings.DEBUG:
+            self.display = Display(visible=0, size=(800, 600))
+            self.display.start()
+        self.driver = webdriver.Chrome()
+        sleep(4)
+
+    # Close chromedriver
+    def close_driver(self):
+        print('closing driver...')
+        if self.display:
+            self.display.stop()
+        self.driver.quit()
+        print('closed!')
+
+    # Tell the browser to get a page
+    def get_page(self, url):
+        print('getting page...')
+        self.driver.get(url)
+        sleep(3)
 
     def get_title(self, klubnacht):
         appendix = ""
@@ -35,29 +61,24 @@ class Command(BaseCommand):
         klubnacht = DancefloorEvent.objects.get_next_klubnacht()
         if klubnacht and not klubnacht.is_posted_to_rr:
             print("%s %s" % (klubnacht.pk, klubnacht.name))
-            if not settings.DEBUG:
-                display = Display(visible=0, size=(800, 600))
-                display.start()
-            driver = webdriver.Chrome()
-            driver.get('https://restrealitaet.de/r/login')
-            driver.implicitly_wait(1)
-            print("login")
-            username = driver.find_element_by_name('username')
-            password = driver.find_element_by_name('password')
+            self.start_driver()
+            self.get_page('https://restrealitaet.de/r/login')
+            username = self.driver.find_element_by_name('username')
+            password = self.driver.find_element_by_name('password')
             username.send_keys(settings.RR_USERNAME)
             password.send_keys(settings.RR_PASSWORD)
-            login = driver.find_element_by_css_selector(".loginform button")
+            login = self.driver.find_element_by_css_selector(".loginform button")
+            print("login...")
             login.click()
-            driver.implicitly_wait(1)
-            driver.find_element_by_link_text('Bar').click()
-            driver.implicitly_wait(1)
-            driver.find_element_by_css_selector('button.new-btn').click()
-            driver.implicitly_wait(1)
-            title_element = driver.find_element_by_name('title')
-            text_element = driver.find_element_by_name('text')
+            sleep(3)
+            self.driver.find_element_by_link_text('Bar').click()
+            sleep(3)
+            self.driver.find_element_by_css_selector('button.new-btn').click()
+            sleep(3)
+            title_element = self.driver.find_element_by_name('title')
+            text_element = self.driver.find_element_by_name('text')
             title_element.send_keys(self.get_title(klubnacht))
             text = render_to_string('klubnacht-tt-rr.html', {'event': klubnacht})
             text_element.send_keys(text.strip())
-            driver.implicitly_wait(3)
-            driver.quit()
-        print("stop-post-to-rr")
+            sleep(3)
+            self.close_driver()
