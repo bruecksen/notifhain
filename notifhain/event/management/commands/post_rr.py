@@ -21,10 +21,10 @@ class Command(BaseCommand):
 
     # Open headless chromedriver
     def start_driver(self):
-        if not settings.DEBUG:
-            self.display = Display(visible=0, size=(800, 600))
-            print("starting display...")
-            self.display.start()
+        # if not settings.DEBUG:
+        self.display = Display(visible=0, size=(800, 600))
+        print("starting display...")
+        self.display.start()
         print("starting driver...")
         self.driver = webdriver.Chrome()
         sleep(4)
