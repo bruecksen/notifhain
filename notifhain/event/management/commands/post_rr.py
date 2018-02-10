@@ -40,6 +40,7 @@ class Command(BaseCommand):
                 display.start()
             driver = webdriver.Chrome()
             driver.get('https://restrealitaet.de/r/login')
+            driver.implicitly_wait(1)
             print("login")
             username = driver.find_element_by_name('username')
             password = driver.find_element_by_name('password')
