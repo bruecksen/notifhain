@@ -7,7 +7,10 @@ from django.conf import settings
 from notifhain.event.models import DancefloorEvent, Slot
 
 from pyvirtualdisplay import Display
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait # available since 2.4.0
 from selenium import webdriver
+from selenium.webdriver.support import expected_conditions as EC # available since 2.26.0
 
 
 def berghainify(name):
@@ -27,7 +30,6 @@ class Command(BaseCommand):
         self.display.start()
         print("starting driver...")
         self.driver = webdriver.Chrome()
-        sleep(4)
 
     # Close chromedriver
     def close_driver(self):
@@ -41,7 +43,6 @@ class Command(BaseCommand):
     def get_page(self, url):
         print('getting page...')
         self.driver.get(url)
-        sleep(3)
 
     def get_title(self, klubnacht):
         appendix = ""
@@ -71,11 +72,9 @@ class Command(BaseCommand):
             login = self.driver.find_element_by_css_selector(".loginform button")
             print("login...")
             login.click()
-            self.driver.implicitly_wait(10)
-            self.driver.find_element_by_link_text('Bar').click()
-            self.driver.implicitly_wait(10)
+            element = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.LINK_TEXT, "Bar")))
+            element.click()
             self.driver.find_element_by_css_selector('button.new-btn').click()
-            self.driver.implicitly_wait(10)
             title_element = self.driver.find_element_by_name('title')
             text_element = self.driver.find_element_by_name('text')
             title_element.send_keys(self.get_title(klubnacht))
