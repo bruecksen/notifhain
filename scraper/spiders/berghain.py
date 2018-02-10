@@ -95,7 +95,7 @@ class BerghainEventDetailSpider(scrapy.Spider):
         item["date_string"] = date
         time_string = time
         item["time_string"] = time_string.replace("/ Start ", "")
-        item["description"] = response.css(".content .col_content:nth-child(3) p::text").extract()
+        item["description"] = "".join(response.css(".content .col_content:nth-child(3) p::text").extract())
         item["url"] = response.url
         item["rooms"] = []
         for i, running_order in enumerate(response.css(".content .col_context h4.type_dancefloor_color::text").extract()):
@@ -128,9 +128,6 @@ class BerghainEventUpdateSpider(BerghainEventDetailSpider):
     name = "berghain-event-update"
 
     def start_requests(self):
-        today = datetime.date.today()
-        next_monday = today + datetime.timedelta(days=-today.weekday(), weeks=1)
-        logger.info("update all till:" + str(next_monday))
-        for event in DancefloorEvent.objects.uncompleted().filter(event_details__event_date__lte=next_monday):
+        for event in DancefloorEvent.objects.uncompleted().till_sunday():
             logger.info(event.url)
             yield scrapy.Request(event.url, meta={"event": event}, callback=self.parse)

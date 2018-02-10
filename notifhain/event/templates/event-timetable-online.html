@@ -7,8 +7,7 @@ the timetable for {{ event.name }} at {{ event.event_date }} is now online:
 {{room.name}}:
 {% get_room_slots event room as slots %}
 ----------------------------------
-    {% for slot in  slots %}
-        {{ slot.time }}: {% for artist in slot.artists.all %} {{artist.name}} {% endfor %}
+    {% for slot in  slots %}{{ slot.time }}: {% for artist in slot.artists.all %} {{artist.name}}{% endfor %}
     {% endfor %}
 {% endfor %}
 

@@ -1,7 +1,17 @@
+import datetime
+
 from django.db import models
 
 
-class CompletedManager(models.Manager):
+class ProgramManager(models.Manager):
+    def completed(self, **kwargs):
+        return self.filter(completed=True)
+
+    def uncompleted(self, **kwargs):
+        return self.filter(completed=False)
+
+
+class EventQuerySet(models.QuerySet):
     def completed(self, **kwargs):
         return self.filter(completed=True)
 
@@ -11,6 +21,14 @@ class CompletedManager(models.Manager):
     def new(self, **kwargs):
         return self.filter(completed=None)
 
+    def till_sunday(self, **kwargs):
+        today = datetime.date.today()
+        next_monday = today + datetime.timedelta(days=-today.weekday(), weeks=1)
+        return self.filter(event_details__event_date__lt=next_monday)
+
+    def get_next_klubnacht(self, **kwargs):
+        return self.filter(name__icontains="klubnacht", event_details__event_date__gte=datetime.datetime.now()).first()
+
 
 class Program(models.Model):
     name = models.CharField(max_length=200)
@@ -19,7 +37,7 @@ class Program(models.Model):
     last_updated = models.DateTimeField(auto_now=True)
     completed = models.BooleanField(default=False)
 
-    objects = CompletedManager()
+    objects = ProgramManager()
 
     def __str__(self):
         return self.name
@@ -36,10 +54,11 @@ class DancefloorEvent(models.Model):
     program = models.ForeignKey(Program, on_delete=models.CASCADE)
     last_updated = models.DateTimeField(auto_now=True)
     completed = models.NullBooleanField(default=None, null=True, blank=True)
-    notification_send = models.BooleanField(default=False)
+    is_notification_send = models.BooleanField(default=False)
+    is_posted_to_rr = models.BooleanField(default=False)
     timetable_updated = models.DateTimeField(blank=True, null=True)
 
-    objects = CompletedManager()
+    objects = EventQuerySet.as_manager()
 
     def __str__(self):
         return self.name

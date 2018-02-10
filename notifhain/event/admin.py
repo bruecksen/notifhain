@@ -10,7 +10,7 @@ admin.site.register(Program, ProgramAdmin)
 
 
 class DancefloorEventAdmin(admin.ModelAdmin):
-    list_display = ('name', 'event_date', 'url', 'last_updated', 'completed', 'notification_send')
+    list_display = ('name', 'event_date', 'url', 'last_updated', 'completed', 'is_notification_send')
     list_filter = ('program',)
 
 admin.site.register(DancefloorEvent, DancefloorEventAdmin)
