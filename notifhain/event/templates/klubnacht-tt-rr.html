@@ -1,0 +1,9 @@
+{% load event %}
+{% for room in event.get_rooms %}
+{{ room.name }}
+{% get_room_slots event room as slots %}{% for slot in  slots %}
+    {{ slot.time }}: {% for artist in slot.artists.all %} {{artist.name}} {% endfor %}{% endfor %}
+{% endfor %}
+{{ event.event_details.description}}
+
+Dein notifhain!
