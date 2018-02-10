@@ -30,8 +30,10 @@ class Command(BaseCommand):
         return "%s %s%s" % (klubnacht.event_date.strftime("%d.%m"), capfirst(klubnacht.name.lower()), appendix)
 
     def handle(self, *args, **options):
+        print("start-post-to-rr")
         klubnacht = DancefloorEvent.objects.get_next_klubnacht()
         if klubnacht and not klubnacht.is_posted_to_rr:
+            print("%s %s" % (klubnacht.pk, klubnacht.name))
             driver = webdriver.Chrome()
             driver.get('https://restrealitaet.de/r/login')
             username = driver.find_element_by_name('username')
@@ -52,3 +54,4 @@ class Command(BaseCommand):
             text_element.send_keys(text.strip())
             time.sleep(10)
             driver.quit()
+        print("stop-post-to-rr")
