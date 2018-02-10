@@ -6,6 +6,7 @@ from django.conf import settings
 
 from notifhain.event.models import DancefloorEvent, Slot
 
+from pyvirtualdisplay import Display
 from selenium import webdriver
 
 
@@ -34,8 +35,12 @@ class Command(BaseCommand):
         klubnacht = DancefloorEvent.objects.get_next_klubnacht()
         if klubnacht and not klubnacht.is_posted_to_rr:
             print("%s %s" % (klubnacht.pk, klubnacht.name))
+            if not settings.DEBUG:
+                display = Display(visible=0, size=(800, 600))
+                display.start()
             driver = webdriver.Chrome()
             driver.get('https://restrealitaet.de/r/login')
+            print("login")
             username = driver.find_element_by_name('username')
             password = driver.find_element_by_name('password')
             username.send_keys(settings.RR_USERNAME)
