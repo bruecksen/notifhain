@@ -251,3 +251,6 @@ ADMIN_URL = env('DJANGO_ADMIN_URL', default=r'^admin/')
 # CELERY_ACCEPT_CONTENT = ['application/json']
 # CELERY_TASK_SERIALIZER = 'json'
 # CELERY_RESULT_SERIALIZER = 'json'
+
+RR_USERNAME = env('DJANGO_RR_USERNAME', default='')
+RR_PASSWORD = env('DJANGO_RR_PASSWORD', default='')
