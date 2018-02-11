@@ -29,7 +29,7 @@ class Command(BaseCommand):
         print("starting display...")
         self.display.start()
         print("starting driver...")
-        self.driver = webdriver.Firefox()
+        self.driver = webdriver.Chrome()
 
     # Close chromedriver
     def close_driver(self):
