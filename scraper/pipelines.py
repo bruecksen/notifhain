@@ -148,5 +148,5 @@ class EventDetailsPipeline(DjangoPipeline):
                 send_emails_to,
                 fail_silently=False,
             )
-            event.notification_send = True
+            event.is_notification_send = True
             event.save()
