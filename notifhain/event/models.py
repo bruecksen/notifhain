@@ -5,21 +5,21 @@ from django.db import models
 
 class ProgramManager(models.Manager):
     def completed(self, **kwargs):
-        return self.filter(completed=True)
+        return self.filter(is_completed=True)
 
     def uncompleted(self, **kwargs):
-        return self.filter(completed=False)
+        return self.filter(is_completed=False)
 
 
 class EventQuerySet(models.QuerySet):
     def completed(self, **kwargs):
-        return self.filter(completed=True)
+        return self.filter(is_completed=True)
 
     def uncompleted(self, **kwargs):
-        return self.filter(completed=False)
+        return self.filter(is_completed=False)
 
     def new(self, **kwargs):
-        return self.filter(completed=None)
+        return self.filter(is_completed=None)
 
     def till_sunday(self, **kwargs):
         today = datetime.date.today()
@@ -35,7 +35,7 @@ class Program(models.Model):
     url = models.URLField(unique=True)
     month = models.DateField()
     last_updated = models.DateTimeField(auto_now=True)
-    completed = models.BooleanField(default=False)
+    is_completed = models.BooleanField(default=False)
 
     objects = ProgramManager()
 

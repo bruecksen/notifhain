@@ -83,11 +83,11 @@ class BerghainEventDetailSpider(scrapy.Spider):
         event = response.meta["event"]
         item["event"] = event
         timetable_exists = response.css(".running_order_time").extract_first()
-        if event.completed is not None and not timetable_exists:
+        if event.is_completed is not None and not timetable_exists:
             # if not the first run
             # if timetable still doesn't exist
             return
-        item["completed"] = timetable_exists and True or False
+        item["is_completed"] = timetable_exists and True or False
         item["has_timetable"] = timetable_exists and True or False
         date = response.css("h2::text").extract_first()
         name = response.css("h2 span:nth-child(1)::text").extract_first()

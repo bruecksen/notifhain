@@ -5,7 +5,7 @@ from .models import Program, DancefloorEvent, DancefloorEventDetails, \
 
 
 class ProgramAdmin(admin.ModelAdmin):
-    list_display = ('name', 'month', 'url', 'last_updated', 'completed')
+    list_display = ('name', 'month', 'url', 'last_updated', 'is_completed')
 admin.site.register(Program, ProgramAdmin)
 
 
