@@ -61,7 +61,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         print("start-post-to-rr")
         klubnacht = DancefloorEvent.objects.get_next_klubnacht()
-        if klubnacht and not klubnacht.is_posted_to_rr:
+        if klubnacht and klubnacht.has_timetable and not klubnacht.is_posted_to_rr:
             print("%s %s" % (klubnacht.pk, klubnacht.name))
             self.start_driver()
             self.get_page('https://restrealitaet.de/r/login')

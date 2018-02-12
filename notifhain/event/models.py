@@ -53,7 +53,8 @@ class DancefloorEvent(models.Model):
     event_date = models.DateField(blank=True, null=True)
     program = models.ForeignKey(Program, on_delete=models.CASCADE)
     last_updated = models.DateTimeField(auto_now=True)
-    completed = models.NullBooleanField(default=None, null=True, blank=True)
+    is_completed = models.NullBooleanField(default=None, null=True, blank=True)
+    has_timetable = models.BooleanField(default=False)
     is_notification_send = models.BooleanField(default=False)
     is_posted_to_rr = models.BooleanField(default=False)
     timetable_updated = models.DateTimeField(blank=True, null=True)
@@ -88,7 +89,7 @@ class DancefloorEventDetails(models.Model):
     last_updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.name
+        return "%s %s" % (self.name, self.event_date)
 
     class Meta:
         verbose_name = "Event Detail"

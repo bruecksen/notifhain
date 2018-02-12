@@ -88,6 +88,7 @@ class BerghainEventDetailSpider(scrapy.Spider):
             # if timetable still doesn't exist
             return
         item["completed"] = timetable_exists and True or False
+        item["has_timetable"] = timetable_exists and True or False
         date = response.css("h2::text").extract_first()
         name = response.css("h2 span:nth-child(1)::text").extract_first()
         time = response.css("h2 span:nth-child(2)::text").extract_first()
