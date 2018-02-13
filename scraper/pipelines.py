@@ -87,8 +87,8 @@ class EventPipeline(DjangoPipeline):
         item_model.is_completed = model.is_completed
         item_model.has_timetable = model.has_timetable
         item_model.is_notification_send = model.is_notification_send
-        item.is_posted_to_rr = model.is_posted_to_rr
-        item.timetable_updated = model.timetable_updated
+        item_model.is_posted_to_rr = model.is_posted_to_rr
+        item_model.timetable_updated = model.timetable_updated
         self.update_model(model, item_model)
         logger.info("Event %s %s" % (item_model.name, created and 'created' or 'updated'))
 

@@ -20,7 +20,8 @@ class DancefloorEventDetailsItem(DjangoItem):
     date_string = scrapy.Field()
     time_string = scrapy.Field()
     rooms = scrapy.Field()
-    completed = scrapy.Field()
+    is_completed = scrapy.Field()
+    has_timetable = scrapy.Field()
 
 
 class RoomItem(DjangoItem):
