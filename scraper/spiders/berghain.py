@@ -84,6 +84,7 @@ class BerghainEventDetailSpider(scrapy.Spider):
         item["event"] = event
         timetable_exists = response.css(".running_order_time").extract_first()
         if event.is_completed is not None and not timetable_exists:
+            logger.info("no update")
             # if not the first run
             # if timetable still doesn't exist
             return
