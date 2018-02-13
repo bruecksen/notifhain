@@ -82,6 +82,13 @@ class EventPipeline(DjangoPipeline):
             return item
 
         model, created = self.get_or_create(item_model)
+        # reset all state values
+        # TODO should be handled differentyl, maybe a separte state model would be good
+        item_model.is_completed = model.is_completed
+        item_model.has_timetable = model.has_timetable
+        item_model.is_notification_send = model.is_notification_send
+        item.is_posted_to_rr = model.is_posted_to_rr
+        item.timetable_updated = model.timetable_updated
         self.update_model(model, item_model)
         logger.info("Event %s %s" % (item_model.name, created and 'created' or 'updated'))
 
@@ -111,7 +118,7 @@ class EventDetailsPipeline(DjangoPipeline):
             for slot_item in room_item["slots"]:
                 self.process_slot(slot_item, room, event_details, spider)
         event = event_details.event
-        event.is_completed = event_details_item["completed"]
+        event.is_completed = event_details_item["is_completed"]
         if event.is_completed and not event.timetable_updated:
             event.timetable_updated = datetime.datetime.now()
         if not event.is_completed and datetime.datetime.now().date() > event.event_date:
