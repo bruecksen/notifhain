@@ -145,6 +145,7 @@ class EventDetailsPipeline(DjangoPipeline):
     def close_spider(self, spider):
         today = datetime.date.today()
         next_monday = today + datetime.timedelta(days=-today.weekday(), weeks=1)
+        logger.info("close_spider: " + next_monday)
         events = DancefloorEvent.objects.filter(has_timetable=True, is_notification_send=False, event_details__event_date__lte=next_monday)
         for event in events:
             logger.info("send_timetable_email: " + event)
