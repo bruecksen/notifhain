@@ -87,6 +87,8 @@ class Command(BaseCommand):
             print(text_element.get_attribute('value'))
             sleep(3)
             send_btn = self.driver.find_element_by_css_selector('.thread-new button[data-call-method="newThread"]')
-            print(send_btn)
+            print("click send button....")
             self.driver.execute_script("arguments[0].click();", send_btn)
+            klubnacht.is_posted_to_rr = True
+            klubnacht.save()
             self.close_driver()

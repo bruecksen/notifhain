@@ -2,7 +2,7 @@
 {% for room in event.get_rooms %}
 {{ room.name }}
 {% get_room_slots event room as slots %}{% for slot in  slots %}
-    {{ slot.time }}: {% for artist in slot.artists.all %} {{artist.name}} {% endfor %}{% endfor %}
+    {{ slot.time }}: {{ slot.name }}{% endfor %}
 {% endfor %}
 {{ event.event_details.description}}
 
