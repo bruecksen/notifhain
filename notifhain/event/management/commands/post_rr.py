@@ -88,5 +88,5 @@ class Command(BaseCommand):
             sleep(3)
             send_btn = self.driver.find_element_by_css_selector('.thread-new button[data-call-method="newThread"]')
             print(send_btn)
-            # self.driver.execute_script("arguments[0].click();", send_btn)
+            self.driver.execute_script("arguments[0].click();", send_btn)
             self.close_driver()
