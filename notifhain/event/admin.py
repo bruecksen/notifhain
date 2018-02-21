@@ -10,8 +10,12 @@ admin.site.register(Program, ProgramAdmin)
 
 
 class DancefloorEventAdmin(admin.ModelAdmin):
-    list_display = ('name', 'event_date', 'url', 'last_updated', 'is_completed', 'has_timetable', 'is_notification_send')
+    list_display = ('name', 'get_title', 'event_date', 'last_updated', 'is_completed', 'has_timetable', 'is_notification_send')
     list_filter = ('program',)
+
+    def get_title(self, obj):
+        return obj.get_title()
+    get_title.short_description = 'Title'
 
 admin.site.register(DancefloorEvent, DancefloorEventAdmin)
 

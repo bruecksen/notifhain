@@ -1,6 +1,9 @@
 import datetime
 
 from django.db import models
+from django.template.defaultfilters import capfirst
+
+from notifhain.core.utils import berghainify
 
 
 class ProgramManager(models.Manager):
@@ -49,6 +52,7 @@ class Program(models.Model):
 
 class DancefloorEvent(models.Model):
     name = models.CharField(max_length=500)
+    custom_appendix = models.CharField(max_length=500, blank=True, null=True)
     url = models.URLField(unique=True)
     event_date = models.DateField(blank=True, null=True)
     program = models.ForeignKey(Program, on_delete=models.CASCADE)
@@ -78,6 +82,22 @@ class DancefloorEvent(models.Model):
 
     def get_slots(self, room):
         return self.event_details.slots.filter(room=room)
+
+    def get_title(self):
+        appendix = ""
+        if not self.custom_appendix:
+            closing_berghain = self.event_details.slots.filter(room__name="Running Order Berghain", name__contains="o").order_by("-order")
+            if closing_berghain:
+                closing_berghain = closing_berghain.first()
+                if "o" in closing_berghain.name:
+                    appendix = "%s" % berghainify(closing_berghain.name)
+            closing_pbar = self.event_details.slots.filter(room__name="Running Order Panorama Bar", name__contains="o").order_by("-order")
+            if closing_pbar:
+                closing_pbar = closing_pbar.first()
+                if "o" in closing_pbar.name:
+                    appendix += "%s%s" % (appendix and ", ", berghainify(closing_pbar.name))
+        appendix = self.custom_appendix or appendix
+        return "%s %s %s" % (self.event_date.strftime("%d.%m"), capfirst(self.name.lower()), appendix)
 
 
 class DancefloorEventDetails(models.Model):

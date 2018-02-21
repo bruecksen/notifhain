@@ -157,5 +157,13 @@ class EventDetailsPipeline(DjangoPipeline):
                 send_emails_to,
                 fail_silently=False,
             )
+            msg_plain = render_to_string('klubnacht-tt-rr.html', {'event': event})
+            send_mail(
+                event.get_title(),
+                msg_plain,
+                settings.DEFAULT_FROM_EMAIL,
+                send_emails_to,
+                fail_silently=False,
+            )
             event.is_notification_send = True
             event.save()
