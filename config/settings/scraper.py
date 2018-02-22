@@ -20,9 +20,15 @@ env.read_env(ROOT_DIR('.env'))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", env("DJANGO_SETTINGS_MODULE", default="config.settings.development"))
 django.setup()
 
-BOT_NAME = 'scraper'
+BOT_NAME = 'notifhain'
 
 SPIDER_MODULES = ['scraper.spiders']
+
+if not env.bool('DJANGO_DEBUG', False):
+    SENTRY_DSN = env('DJANGO_SENTRY_DSN')
+    EXTENSIONS = {
+        "scrapy_sentry.extensions.Errors": 10,
+    }
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'scraper (+http://www.yourdomain.com)'

@@ -4,3 +4,4 @@
 
 raven==6.5.0
 gunicorn==19.7.1
+scrapy-sentry==0.8.0
