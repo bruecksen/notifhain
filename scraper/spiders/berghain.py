@@ -130,7 +130,6 @@ class BerghainEventUpdateSpider(BerghainEventDetailSpider):
     name = "berghain-event-update"
 
     def start_requests(self):
-        raise Exception("error")
         for event in DancefloorEvent.objects.uncompleted().till_sunday():
             logger.info(event.url)
             yield scrapy.Request(event.url, meta={"event": event}, callback=self.parse)
