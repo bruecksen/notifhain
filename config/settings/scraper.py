@@ -13,9 +13,6 @@ import os
 import django
 import environ
 
-from twisted.python import log
-from raven import Client
-
 env = environ.Env()
 ROOT_DIR = environ.Path(__file__) - 3  # (notifhain/config/settings/common.py - 3 = notifhain/)
 env.read_env(ROOT_DIR('.env'))
@@ -26,18 +23,6 @@ django.setup()
 BOT_NAME = 'notifhain'
 
 SPIDER_MODULES = ['scraper.spiders']
-
-if env.bool('DJANGO_DEBUG', False):
-    client = Client(dsn=env('DJANGO_SENTRY_DSN'))
-
-    def log_sentry(dictionary):
-        if dictionary.get('isError') and 'failure' in dictionary:
-            failure = dictionary['failure']
-            exc_type = failure.type
-            exc_value = failure.value
-            traceback = failure.getTracebackObject()
-            client.captureException(exc_info=(exc_type, exc_value, traceback))
-    log.addObserver(log_sentry)
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'scraper (+http://www.yourdomain.com)'
