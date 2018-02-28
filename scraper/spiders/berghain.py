@@ -132,6 +132,5 @@ class BerghainEventUpdateSpider(BerghainEventDetailSpider):
 
     def start_requests(self):
         for event in DancefloorEvent.objects.uncompleted().till_sunday():
-            print(event.url)
             logger.info(event.url)
             yield scrapy.Request(event.url, meta={"event": event}, callback=self.parse)
