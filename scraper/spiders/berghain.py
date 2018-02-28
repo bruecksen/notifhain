@@ -108,10 +108,11 @@ class BerghainEventDetailSpider(scrapy.Spider):
             last = len(slot_items) - 1
             for j, slot in enumerate(slot_items):
                 slot_item = SlotItem()
-                name = slot.css(".running_order_name::text").extract_first()
-                if name:
-                    slot_item["artists"] = self.split_artist_name(name.strip())
-                    slot_item["name"] = name.strip()
+                slot_name = " ".join([s.strip() for s in slot.css(".running_order_name *::text").extract()])
+                if slot_name:
+                    artist_name = slot.css(".running_order_name::text").extract_first()
+                    slot_item["artists"] = self.split_artist_name(artist_name.strip())
+                    slot_item["name"] = slot_name.strip()
                 time = slot.css(".running_order_time::text").extract_first()
                 if time:
                     slot_item["time"] = time.strip()
@@ -131,5 +132,6 @@ class BerghainEventUpdateSpider(BerghainEventDetailSpider):
 
     def start_requests(self):
         for event in DancefloorEvent.objects.uncompleted().till_sunday():
+            print(event.url)
             logger.info(event.url)
             yield scrapy.Request(event.url, meta={"event": event}, callback=self.parse)

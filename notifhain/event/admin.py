@@ -36,7 +36,7 @@ admin.site.register(Artist, ArtistAdmin)
 
 
 class SlotAdmin(admin.ModelAdmin):
-    list_display = ('get_room', 'order', 'name', 'get_artist', 'time', 'is_live_set', 'is_closing')
+    list_display = ('pk', 'get_room', 'order', 'name', 'get_artist', 'time', 'is_live_set', 'is_closing')
     list_filter = ('room', 'event_details')
 
     def get_room(self, obj):
