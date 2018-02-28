@@ -83,12 +83,13 @@ class EventPipeline(DjangoPipeline):
 
         model, created = self.get_or_create(item_model)
         # reset all state values
-        # TODO should be handled differentyl, maybe a separte state model would be good
+        # TODO should be handled differently, maybe a separte state model would be good
         item_model.is_completed = model.is_completed
         item_model.has_timetable = model.has_timetable
         item_model.is_notification_send = model.is_notification_send
         item_model.is_posted_to_rr = model.is_posted_to_rr
         item_model.timetable_updated = model.timetable_updated
+        item_model.custom_appendix = model.custom_appendix
         self.update_model(model, item_model)
         logger.info("Event %s %s" % (item_model.name, created and 'created' or 'updated'))
 
