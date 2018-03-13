@@ -7,6 +7,8 @@ from notifhain.event.models import DancefloorEvent
 from pyvirtualdisplay import Display
 from selenium import webdriver
 
+logger = logging.getLogger('scrapy')
+
 
 class PublishToRR():
 
@@ -36,9 +38,14 @@ class PublishToRR():
         self.driver.get(url)
 
     def publish(self):
+        logger.info("start-post-to-rr")
         klubnacht = DancefloorEvent.objects.get_next_klubnacht()
+        if klubnacht:
+            logger.info("There is a new klubnacht event to publish")
+        else:
+            logger.info("No klubnacht event to publish")
         if klubnacht and klubnacht.has_timetable and not klubnacht.is_posted_to_rr:
-            print("start-post-to-rr")
+            print("post-to-rr")
             print("%s %s" % (klubnacht.pk, klubnacht.get_title()))
             self.start_driver()
             self.get_page('https://restrealitaet.de/r/login')
