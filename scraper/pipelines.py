@@ -8,6 +8,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 
 from notifhain.event.models import Room, Slot, Artist, DancefloorEvent
+from notifhain.event.publisher import PublishToRR
 
 logger = logging.getLogger('scrapy')
 
@@ -168,3 +169,6 @@ class EventDetailsPipeline(DjangoPipeline):
             )
             event.is_notification_send = True
             event.save()
+        # post possible new klubnacht timetable to RR
+        publisher = PublishToRR()
+        publisher.publish()
