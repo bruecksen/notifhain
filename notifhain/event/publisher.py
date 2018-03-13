@@ -1,6 +1,7 @@
 from time import sleep
 from django.template.loader import render_to_string
 from django.conf import settings
+import logging
 
 from notifhain.event.models import DancefloorEvent
 
