@@ -41,10 +41,6 @@ class PublishToRR():
     def publish(self):
         logger.info("start-post-to-rr")
         klubnacht = DancefloorEvent.objects.get_next_klubnacht()
-        if klubnacht:
-            logger.info("There is a new klubnacht event to publish")
-        else:
-            logger.info("No klubnacht event to publish")
         if klubnacht and klubnacht.has_timetable and not klubnacht.is_posted_to_rr:
             print("post-to-rr")
             print("%s %s" % (klubnacht.pk, klubnacht.get_title()))
@@ -77,3 +73,5 @@ class PublishToRR():
             klubnacht.is_posted_to_rr = True
             klubnacht.save()
             self.close_driver()
+        else:
+            logger.info("No klubnacht event to publish")
