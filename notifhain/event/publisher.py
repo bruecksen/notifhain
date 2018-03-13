@@ -44,6 +44,8 @@ class PublishToRR():
         if klubnacht and klubnacht.has_timetable and not klubnacht.is_posted_to_rr:
             print("post-to-rr")
             print("%s %s" % (klubnacht.pk, klubnacht.get_title()))
+            klubnacht.is_posted_to_rr = True
+            klubnacht.save()
             self.start_driver()
             self.get_page('https://restrealitaet.de/r/login')
             username = self.driver.find_element_by_name('username')
@@ -70,8 +72,6 @@ class PublishToRR():
             send_btn = self.driver.find_element_by_css_selector('.thread-new button[data-call-method="newThread"]')
             print("click send button....")
             self.driver.execute_script("arguments[0].click();", send_btn)
-            klubnacht.is_posted_to_rr = True
-            klubnacht.save()
             self.close_driver()
         else:
             logger.info("No klubnacht event to publish")
