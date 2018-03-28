@@ -74,6 +74,8 @@ class BerghainEventDetailSpider(scrapy.Spider):
         super().__init__(**kwargs)
         self.send_email = send_email
         self.publish_to_rr = publish_to_rr
+        logger.info("send_email: " + str(send_email))
+        logger.info("publish_to_rr: " + str(publish_to_rr))
 
     def start_requests(self):
         for event in DancefloorEvent.objects.new():
