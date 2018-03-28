@@ -39,11 +39,11 @@ class PublishToRR():
         self.driver.get(url)
 
     def publish(self, do_submit=False):
-        logger.info("start-post-to-rr")
+        print("start-post-to-rr")
         if do_submit:
-            logger.info("SUBMIT POST!!!")
+            print("SUBMIT POST!!!")
         else:
-            logger.info("TEST RUN, NOT POSTING")
+            print("TEST RUN, NOT POSTING")
         klubnacht = DancefloorEvent.objects.get_next_klubnacht()
         if klubnacht and klubnacht.has_timetable and not klubnacht.is_posted_to_rr:
             print("post-to-rr")
@@ -79,4 +79,4 @@ class PublishToRR():
                 # self.driver.execute_script("arguments[0].click();", send_btn)
             self.close_driver()
         else:
-            logger.info("No klubnacht event to publish")
+            print("No klubnacht event to publish")
