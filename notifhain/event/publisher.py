@@ -38,8 +38,12 @@ class PublishToRR():
         print('getting page...')
         self.driver.get(url)
 
-    def publish(self):
+    def publish(self, do_submit=False):
         logger.info("start-post-to-rr")
+        if do_submit:
+            logger.info("SUBMIT POST!!!")
+        else:
+            logger.info("TEST RUN, NOT POSTING")
         klubnacht = DancefloorEvent.objects.get_next_klubnacht()
         if klubnacht and klubnacht.has_timetable and not klubnacht.is_posted_to_rr:
             print("post-to-rr")
@@ -70,8 +74,9 @@ class PublishToRR():
             print(text_element.get_attribute('value'))
             sleep(3)
             send_btn = self.driver.find_element_by_css_selector('.thread-new button[data-call-method="newThread"]')
-            print("click send button....")
-            self.driver.execute_script("arguments[0].click();", send_btn)
+            if do_submit:
+                print("click send button....")
+                # self.driver.execute_script("arguments[0].click();", send_btn)
             self.close_driver()
         else:
             logger.info("No klubnacht event to publish")
