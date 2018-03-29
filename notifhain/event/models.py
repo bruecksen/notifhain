@@ -1,7 +1,7 @@
 import datetime
 
 from django.db import models
-from django.template.defaultfilters import capfirst
+from django.template.defaultfilters import title
 
 from notifhain.core.utils import berghainify
 
@@ -97,7 +97,7 @@ class DancefloorEvent(models.Model):
                 if "o" in closing_pbar.name:
                     appendix += "%s%s" % (appendix and ", ", berghainify(closing_pbar.name))
         appendix = self.custom_appendix or appendix
-        return "%s %s %s" % (self.event_date.strftime("%d.%m"), capfirst(self.name.lower()), appendix)
+        return "%s %s %s" % (self.event_date.strftime("%d.%m"), title(self.name.lower()), appendix)
 
 
 class DancefloorEventDetails(models.Model):
